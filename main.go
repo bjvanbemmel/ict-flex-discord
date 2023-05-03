@@ -236,7 +236,7 @@ func init() {
 
 func main() {
     session.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-        log.Print("Logged in as: %s#%v", s.State.User.Username, s.State.User.Discriminator)
+        log.Printf("Logged in as: %s#%v", s.State.User.Username, s.State.User.Discriminator)
     })
 
     err := session.Open()
