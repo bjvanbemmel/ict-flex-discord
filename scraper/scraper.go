@@ -14,7 +14,7 @@ type Scraper struct {
 	Previous types.Feed
 }
 
-func (s *Scraper) Start() ([]discordgo.MessageEmbed, error ) {
+func (s *Scraper) Start() ([]discordgo.MessageEmbed, error) {
 	resp, err := http.Get("https://rss.bjvanbemmel.nl/ict-flex")
 	if err != nil {
 		return nil, err
@@ -38,17 +38,17 @@ func (s *Scraper) Start() ([]discordgo.MessageEmbed, error ) {
 		return nil, err
 	}
 
-    if s.Previous.Title == "" {
-        s.Previous = feed
+	if s.Previous.Title == "" {
+		s.Previous = feed
 
-        return nil, nil
-    }
+		return nil, nil
+	}
 
 	var newArticles []*types.Article = []*types.Article{}
 	for _, art := range feed.Articles {
 
 		var found bool = false
-        for _, oldArt := range s.Previous.Articles {
+		for _, oldArt := range s.Previous.Articles {
 			if oldArt.Guid == art.Guid {
 				found = true
 
@@ -63,7 +63,7 @@ func (s *Scraper) Start() ([]discordgo.MessageEmbed, error ) {
 		newArticles = append(newArticles, art)
 	}
 
-    embeds := s.CreateEmbeds(newArticles)
+	embeds := s.CreateEmbeds(newArticles)
 
 	return embeds, nil
 }
