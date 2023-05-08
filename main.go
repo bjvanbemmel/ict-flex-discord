@@ -13,9 +13,9 @@ import (
 )
 
 var (
-    Token string = os.Getenv("USER_TOKEN")
+	Token string = os.Getenv("USER_TOKEN")
 	// Token *string = flag.String("t", "", "Bot token")
-	GUID  string = os.Getenv("GUILD_ID")
+	GUID string = os.Getenv("GUILD_ID")
 	// GUID  *string = flag.String("g", "", "Guild ID")
 
 	TargetRole    *discordgo.Role
@@ -35,7 +35,7 @@ func init() {
 }
 
 func init() {
-    fmt.Println(Token, GUID)
+	fmt.Println(Token, GUID)
 
 	session.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if handle, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
