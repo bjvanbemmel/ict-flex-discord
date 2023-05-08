@@ -13,8 +13,10 @@ import (
 )
 
 var (
-	Token *string = flag.String("t", "", "Bot token")
-	GUID  *string = flag.String("g", "", "Guild ID")
+    Token string = os.Getenv("USER_TOKEN")
+	// Token *string = flag.String("t", "", "Bot token")
+	GUID  string = os.Getenv("GUILD_ID")
+	// GUID  *string = flag.String("g", "", "Guild ID")
 
 	TargetRole    *discordgo.Role
 	TargetChannel *discordgo.Channel
@@ -26,13 +28,15 @@ func init() {
 	flag.Parse()
 
 	var err error
-	session, err = discordgo.New("Bot " + *Token)
+	session, err = discordgo.New("Bot " + Token)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
 func init() {
+    fmt.Println(Token, GUID)
+
 	session.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if handle, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
 			handle(s, i)
@@ -52,7 +56,7 @@ func main() {
 
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
 	for i, v := range commands {
-		cmd, err := session.ApplicationCommandCreate(session.State.User.ID, *GUID, v)
+		cmd, err := session.ApplicationCommandCreate(session.State.User.ID, GUID, v)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
@@ -114,7 +118,7 @@ func main() {
 	log.Info("Removing commands...")
 
 	for _, v := range registeredCommands {
-		err := session.ApplicationCommandDelete(session.State.User.ID, *GUID, v.ID)
+		err := session.ApplicationCommandDelete(session.State.User.ID, GUID, v.ID)
 		if err != nil {
 			log.Fatal(err.Error())
 		}

@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/ict-flex-discord
+    networks:
+      - bot
+    env_file:
+      - .env
+    tty: true
+    restart: always
+  
+networks:
+  bot:
