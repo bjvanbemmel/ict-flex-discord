@@ -36,9 +36,5 @@ var (
 			Name:        "inspect",
 			Description: "Shows the current configuration",
 		},
-		{
-			Name:        "embed",
-			Description: "Sends an embed... I think..?",
-		},
 	}
 )

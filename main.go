@@ -71,7 +71,7 @@ func main() {
 	var scraper scraper.Scraper = scraper.Scraper{}
 	go func() {
 		for {
-			time.Sleep(time.Second * 5)
+			time.Sleep(time.Second * 30)
 
 			if TargetRole == nil || TargetChannel == nil {
 				log.Info("Values nil. Skipping...")

@@ -64,6 +64,7 @@ func (s *Scraper) Start() ([]discordgo.MessageEmbed, error) {
 	}
 
 	embeds := s.CreateEmbeds(newArticles)
+	s.Previous = feed
 
 	return embeds, nil
 }
