@@ -80,8 +80,7 @@ func (s Scraper) CreateEmbeds(articles []*types.Article) []discordgo.MessageEmbe
 			Description: art.Description,
 			Timestamp:   art.CreatedAt.Format(time.RFC3339),
 			Author: &discordgo.MessageEmbedAuthor{
-				URL:  art.Author.Profile,
-				Name: art.Author.Name,
+				Name: art.Author,
 			},
 		}
 
