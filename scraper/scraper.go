@@ -15,7 +15,12 @@ type Scraper struct {
 }
 
 func (s *Scraper) Start() ([]discordgo.MessageEmbed, error) {
-	resp, err := http.Get("https://rss.bjvanbemmel.nl/ict-flex")
+	var client *http.Client = &http.Client{}
+
+	req, err := http.NewRequest(http.MethodGet, "https://rss.bjvanbemmel.nl/ict-flex", nil)
+	req.Header.Set("User-Agent", "Beep boop. I am the ICT-Flex-Discord bot. Boop bap.")
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
