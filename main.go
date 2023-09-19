@@ -8,18 +8,16 @@ import (
 	"time"
 
 	"github.com/bjvanbemmel/ict-flex-discord/scraper"
+	"github.com/bjvanbemmel/ict-flex-discord/storage"
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
 )
 
 var (
 	Token string = os.Getenv("USER_TOKEN")
-	// Token *string = flag.String("t", "", "Bot token")
 	GUID string = os.Getenv("GUILD_ID")
-	// GUID  *string = flag.String("g", "", "Guild ID")
 
-	TargetRole    *discordgo.Role
-	TargetChannel *discordgo.Channel
+	Settings      *storage.Settings = &storage.Settings{}
 )
 
 var session *discordgo.Session
@@ -35,8 +33,6 @@ func init() {
 }
 
 func init() {
-	fmt.Println(Token, GUID)
-
 	session.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if handle, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
 			handle(s, i)
@@ -77,8 +73,18 @@ func main() {
 		for {
 			time.Sleep(time.Second * 30)
 
-			if TargetRole == nil || TargetChannel == nil {
-				log.Info("Values nil. Skipping...")
+            role, err := Settings.Role()
+            if err != nil {
+                log.Errorf("Something went wrong while fetching role: `%s`", err.Error())
+            }
+
+            channel, err := Settings.Channel()
+            if err != nil {
+                log.Errorf("Something went wrong while fetching channel: `%s`", err.Error())
+            }
+
+			if role == nil || channel == nil {
+				log.Infof("Values nil. Skipping... `%v`", Settings)
 				continue
 			}
 
@@ -95,14 +101,14 @@ func main() {
 
 			for _, embed := range embeds {
 				msg := discordgo.MessageSend{
-					Content: fmt.Sprintf("%v New announcement!", TargetRole.Mention()),
+					Content: fmt.Sprintf("%v New announcement!", Settings.TargetRole.Mention()),
 					Embeds: []*discordgo.MessageEmbed{
 						&embed,
 					},
 				}
 
 				log.Info("Sending embed to TargetChannel...")
-				_, err := session.ChannelMessageSendComplex(TargetChannel.ID, &msg)
+				_, err := session.ChannelMessageSendComplex(Settings.TargetChannel.ID, &msg)
 				if err != nil {
 					log.Fatal(err.Error())
 				}

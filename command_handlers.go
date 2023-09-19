@@ -17,14 +17,18 @@ var (
 				optionMap[opt.Name] = opt
 			}
 
-			TargetRole = optionMap["role"].RoleValue(nil, "")
-			log.Info("Role has been configured.")
+            if err := Settings.SetRole(optionMap["role"].RoleValue(nil, "")); err != nil {
+                log.Errorf("Something went wrong while setting role: `%s`", err.Error())
+                return
+            } else {
+                log.Info("Role has been configured.")
+            }
 
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
 					Flags:   discordgo.MessageFlagsEphemeral,
-					Content: fmt.Sprintf("Registered %v as the target role.", TargetRole.Mention()),
+					Content: fmt.Sprintf("Registered %v as the target role.", Settings.TargetRole.Mention()),
 				},
 			})
 		},
@@ -36,14 +40,18 @@ var (
 				optionMap[opt.Name] = opt
 			}
 
-			TargetChannel = optionMap["channel"].ChannelValue(nil)
-			log.Info("Channel has been configured.")
+            if err := Settings.SetChannel(optionMap["channel"].ChannelValue(nil)); err != nil {
+                log.Errorf("Something went wrong while setting channel: `%s`", err.Error())
+                return
+            } else {
+                log.Info("Channel has been configured.")
+            }
 
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
 					Flags:   discordgo.MessageFlagsEphemeral,
-					Content: fmt.Sprintf("Registered %v as the target channel.", TargetChannel.Mention()),
+					Content: fmt.Sprintf("Registered %v as the target channel.", Settings.TargetChannel.Mention()),
 				},
 			})
 		},
@@ -51,12 +59,22 @@ var (
 			var tr string = "<nil>"
 			var tc string = "<nil>"
 
-			if TargetRole != nil {
-				tr = TargetRole.Mention()
+            role, err := Settings.Role()
+            if err != nil {
+                log.Errorf("Something went wrong while fetching role: `%s`", err.Error())
+            }
+
+            channel, err := Settings.Channel()
+            if err != nil {
+                log.Errorf("Something went wrong while fetching channel: `%s`", err.Error())
+            }
+
+			if role != nil {
+				tr = role.Mention()
 			}
 
-			if TargetChannel != nil {
-				tc = TargetChannel.Mention()
+			if channel != nil {
+				tc = channel.Mention()
 			}
 
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
