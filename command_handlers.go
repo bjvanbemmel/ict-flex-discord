@@ -17,12 +17,12 @@ var (
 				optionMap[opt.Name] = opt
 			}
 
-            if err := Settings.SetRole(optionMap["role"].RoleValue(nil, "")); err != nil {
-                log.Errorf("Something went wrong while setting role: `%s`", err.Error())
-                return
-            } else {
-                log.Info("Role has been configured.")
-            }
+			if err := Settings.SetRole(optionMap["role"].RoleValue(nil, "")); err != nil {
+				log.Errorf("Something went wrong while setting role: `%s`", err.Error())
+				return
+			} else {
+				log.Info("Role has been configured.")
+			}
 
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
@@ -40,12 +40,12 @@ var (
 				optionMap[opt.Name] = opt
 			}
 
-            if err := Settings.SetChannel(optionMap["channel"].ChannelValue(nil)); err != nil {
-                log.Errorf("Something went wrong while setting channel: `%s`", err.Error())
-                return
-            } else {
-                log.Info("Channel has been configured.")
-            }
+			if err := Settings.SetChannel(optionMap["channel"].ChannelValue(nil)); err != nil {
+				log.Errorf("Something went wrong while setting channel: `%s`", err.Error())
+				return
+			} else {
+				log.Info("Channel has been configured.")
+			}
 
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
@@ -59,15 +59,15 @@ var (
 			var tr string = "<nil>"
 			var tc string = "<nil>"
 
-            role, err := Settings.Role()
-            if err != nil {
-                log.Errorf("Something went wrong while fetching role: `%s`", err.Error())
-            }
+			role, err := Settings.Role()
+			if err != nil {
+				log.Errorf("Something went wrong while fetching role: `%s`", err.Error())
+			}
 
-            channel, err := Settings.Channel()
-            if err != nil {
-                log.Errorf("Something went wrong while fetching channel: `%s`", err.Error())
-            }
+			channel, err := Settings.Channel()
+			if err != nil {
+				log.Errorf("Something went wrong while fetching channel: `%s`", err.Error())
+			}
 
 			if role != nil {
 				tr = role.Mention()

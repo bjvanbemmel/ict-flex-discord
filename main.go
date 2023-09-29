@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -15,9 +16,9 @@ import (
 
 var (
 	Token string = os.Getenv("USER_TOKEN")
-	GUID string = os.Getenv("GUILD_ID")
+	GUID  string = os.Getenv("GUILD_ID")
 
-	Settings      *storage.Settings = &storage.Settings{}
+	Settings *storage.Settings = &storage.Settings{}
 )
 
 var session *discordgo.Session
@@ -73,15 +74,15 @@ func main() {
 		for {
 			time.Sleep(time.Second * 30)
 
-            role, err := Settings.Role()
-            if err != nil {
-                log.Errorf("Something went wrong while fetching role: `%s`", err.Error())
-            }
+			role, err := Settings.Role()
+			if err != nil {
+				log.Errorf("Something went wrong while fetching role: `%s`", err.Error())
+			}
 
-            channel, err := Settings.Channel()
-            if err != nil {
-                log.Errorf("Something went wrong while fetching channel: `%s`", err.Error())
-            }
+			channel, err := Settings.Channel()
+			if err != nil {
+				log.Errorf("Something went wrong while fetching channel: `%s`", err.Error())
+			}
 
 			if role == nil || channel == nil {
 				log.Infof("Values nil. Skipping... `%v`", Settings)
@@ -94,6 +95,9 @@ func main() {
 
 				return
 			}
+
+			raw, _ := json.Marshal(embeds)
+			fmt.Println(string(raw))
 
 			if len(embeds) == 0 {
 				continue
