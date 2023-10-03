@@ -2,6 +2,7 @@ package scraper
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -64,6 +65,13 @@ func (s *Scraper) Start() ([]discordgo.MessageEmbed, error) {
 		if found {
 			continue
 		}
+
+		fmt.Printf("[NEW] [%s] GUID: `%v` TITLE: `%s`\n", time.Now().String(), art.Guid, art.Title)
+		fmt.Println("OLD ARTICLES:")
+		for _, art := range s.Previous.Articles {
+			fmt.Printf("GUID: `%v` TITLE: `%s`\n", art.Guid, art.Title)
+		}
+		fmt.Println("END OF OLD ARTICLES")
 
 		newArticles = append(newArticles, art)
 	}

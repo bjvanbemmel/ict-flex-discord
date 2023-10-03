@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -95,9 +94,6 @@ func main() {
 
 				return
 			}
-
-			raw, _ := json.Marshal(embeds)
-			fmt.Println(string(raw))
 
 			if len(embeds) == 0 {
 				continue
