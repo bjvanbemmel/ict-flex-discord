@@ -72,6 +72,9 @@ func (s *Scraper) Start() ([]discordgo.MessageEmbed, error) {
 			fmt.Printf("GUID: `%v` TITLE: `%s`\n", art.Guid, art.Title)
 		}
 		fmt.Println("END OF OLD ARTICLES")
+		fmt.Println("START OF RSS FEED")
+		fmt.Println(string(re))
+		fmt.Println("END OF RSS FEED")
 
 		newArticles = append(newArticles, art)
 	}
